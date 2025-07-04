@@ -1,0 +1,34 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+class Config:
+    BOT_TOKEN = os.getenv('BOT_TOKEN')
+    CHANNEL_ID = os.getenv('CHANNEL_ID')
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4.1')
+    TIMEZONE = os.getenv('TIMEZONE', 'Asia/Almaty')
+
+    # Расписание публикации постов (часы)
+    POST_SCHEDULE = [8, 13, 19]
+
+    # Типы постов
+    POST_TYPES = [
+        'motivation',
+        'fact',
+        'meme',
+        'devlog'
+    ]
+
+    @classmethod
+    def validate(cls):
+        """Проверка наличия обязательных переменных"""
+        required_vars = ['BOT_TOKEN', 'CHANNEL_ID', 'OPENAI_API_KEY']
+        missing_vars = [var for var in required_vars if not getattr(cls, var)]
+
+        if missing_vars:
+            raise ValueError(f"Отсутствуют обязательные переменные окружения: {', '.join(missing_vars)}")
+
+        return True
