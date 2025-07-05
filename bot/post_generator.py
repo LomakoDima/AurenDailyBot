@@ -108,7 +108,6 @@ class PostGenerator:
             return self._get_fallback_post(post_type)
 
     def _get_fallback_post(self, post_type: str) -> str:
-        """Резервные посты на случай ошибок с OpenAI"""
         fallback_posts = {
             'motivation': [
                 "Каждый баг - это возможность стать лучше. Сегодня отличный день для написания чистого кода!",
@@ -135,7 +134,6 @@ class PostGenerator:
         return random.choice(fallback_posts.get(post_type, fallback_posts['motivation']))
 
     def get_post_type_for_time(self, hour: int) -> str:
-        """Определяет тип поста в зависимости от времени"""
         if hour == 8:
             return 'motivation'
         elif hour == 13:
