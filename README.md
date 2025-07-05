@@ -20,7 +20,6 @@
 - [`aiogram`](https://github.com/aiogram/aiogram)
 - OpenAI API
 - `apscheduler` для планирования
-- SQLite или JSON для хранения истории
 
 ## 🚀 Быстрый старт
 

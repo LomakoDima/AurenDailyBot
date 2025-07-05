@@ -11,7 +11,6 @@ class ChannelPublisher:
         self.bot = Bot(token=Config.BOT_TOKEN)
 
     async def publish_post(self, content: str, parse_mode: str = None) -> bool:
-        """Публикует пост в канал"""
         try:
             logger.info(f"Публикация поста в канал {Config.CHANNEL_ID}")
 
@@ -30,7 +29,6 @@ class ChannelPublisher:
             return False
 
     async def test_connection(self) -> bool:
-        """Тестирует соединение с каналом"""
         try:
             chat = await self.bot.get_chat(Config.CHANNEL_ID)
             logger.info(f"Соединение с каналом '{chat.title}' успешно")
@@ -41,5 +39,4 @@ class ChannelPublisher:
             return False
 
     async def close(self):
-        """Закрывает соединение с ботом"""
         await self.bot.session.close()
