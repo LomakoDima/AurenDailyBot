@@ -27,5 +27,3 @@
    ```bash
    git clone https://github.com/LomakoDima/aurendailybot.git
    cd aurendailybot
-
-.
