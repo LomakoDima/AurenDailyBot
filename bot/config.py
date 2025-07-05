@@ -11,10 +11,8 @@ class Config:
     OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4.1')
     TIMEZONE = os.getenv('TIMEZONE', 'Asia/Almaty')
 
-    # Расписание публикации постов (часы)
     POST_SCHEDULE = [8, 13, 19]
 
-    # Типы постов
     POST_TYPES = [
         'motivation',
         'fact',
@@ -24,7 +22,6 @@ class Config:
 
     @classmethod
     def validate(cls):
-        """Проверка наличия обязательных переменных"""
         required_vars = ['BOT_TOKEN', 'CHANNEL_ID', 'OPENAI_API_KEY']
         missing_vars = [var for var in required_vars if not getattr(cls, var)]
 
