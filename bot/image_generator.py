@@ -1,4 +1,4 @@
-# image_generator.py
+# image_generator.py | MIT License | 2025 | author: DimaLab
 import logging
 import asyncio
 from openai import AsyncOpenAI
