@@ -196,7 +196,7 @@ class PostGenerator:
         """Определяет тип поста по времени"""
         if hour == 8:
             return 'motivation'  # Утренние мотивационные посты с изображениями
-        elif hour == 13:
+        elif hour == 14:
             return random.choice(['fact', 'meme'])
         elif hour == 19:
             return random.choice(['devlog', 'fact'])
