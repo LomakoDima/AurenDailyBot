@@ -12,6 +12,7 @@ class Config:
     OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4.1')
     IMAGE_MODEL = os.getenv('IMAGE_MODEL', 'gpt-image-1')
     IMAGE_SIZE = os.getenv('IMAGE_SIZE', '1024x1024')
+    IMAGE_QUALITY = os.getenv('IMAGE_QUALITY', 'high')
     TIMEZONE = os.getenv('TIMEZONE', 'Asia/Almaty')
 
     POST_SCHEDULE = [8, 13, 19]

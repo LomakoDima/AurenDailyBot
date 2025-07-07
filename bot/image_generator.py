@@ -21,7 +21,7 @@ class ImageGenerator:
                 model=Config.IMAGE_MODEL,
                 prompt=prompt,
                 size=Config.IMAGE_SIZE,
-                quality="standard",
+                quality=Config.IMAGE_QUALITY,
                 n=1,
             )
 
