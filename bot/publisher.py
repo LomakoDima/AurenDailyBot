@@ -2,7 +2,7 @@
 import logging
 import aiohttp
 from aiogram import Bot
-from aiogram.types import FSInputFile, URLInputFile
+from aiogram.types import FSInputFile, URLInputFile, BufferedInputFile
 from aiogram.enums import ParseMode
 from .config import Config
 
@@ -21,8 +21,21 @@ class ChannelPublisher:
             # Если есть изображение, публикуем с фото
             if post_data.get('image_url'):
                 try:
-                    # Создаем URLInputFile для отправки изображения по URL
-                    photo = URLInputFile(post_data['image_url'])
+                    image_data = post_data['image_url']
+                    logger.info(f"Тип изображения: {type(image_data)}")
+
+                    # Обрабатываем разные типы изображений
+                    if isinstance(image_data, str):
+                        # URL изображения
+                        logger.info(f"Отправка изображения по URL: {image_data[:50]}...")
+                        photo = URLInputFile(image_data)
+                    elif isinstance(image_data, BufferedInputFile):
+                        # Уже готовый BufferedInputFile
+                        logger.info("Отправка изображения как BufferedInputFile")
+                        photo = image_data
+                    else:
+                        logger.error(f"Неподдерживаемый тип изображения: {type(image_data)}")
+                        return await self._send_text_only(post_data['text'], parse_mode)
 
                     message = await self.bot.send_photo(
                         chat_id=Config.CHANNEL_ID,
@@ -35,12 +48,14 @@ class ChannelPublisher:
                     return True
 
                 except Exception as img_error:
-                    logger.warning(f"Ошибка при отправке изображения: {img_error}")
+                    logger.error(f"Ошибка при отправке изображения: {img_error}")
+                    logger.error(f"Детали изображения: {post_data.get('image_url')}")
                     # Отправляем только текст, если изображение не удалось
                     return await self._send_text_only(post_data['text'], parse_mode)
 
             # Если изображения нет, отправляем только текст
             else:
+                logger.info("Изображение отсутствует, отправляем только текст")
                 return await self._send_text_only(post_data['text'], parse_mode)
 
         except Exception as e:

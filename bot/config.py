@@ -15,7 +15,7 @@ class Config:
     IMAGE_QUALITY = os.getenv('IMAGE_QUALITY', 'high')
     TIMEZONE = os.getenv('TIMEZONE', 'Asia/Almaty')
 
-    POST_SCHEDULE = [8, 13, 19]
+    POST_SCHEDULE = [(8, 0), (15, 29), (20, 00)]
 
     POST_TYPES = [
         'motivation',

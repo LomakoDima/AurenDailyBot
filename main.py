@@ -89,10 +89,10 @@ class TelegramChannelBot:
         """Настраивает планировщик задач"""
         logger.info("Настройка планировщика...")
 
-        for hour in Config.POST_SCHEDULE:
+        for hour, minute in Config.POST_SCHEDULE:
             trigger = CronTrigger(
                 hour=hour,
-                minute=0,
+                minute=minute,
                 second=0,
                 timezone=self.timezone
             )
