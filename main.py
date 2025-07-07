@@ -161,7 +161,7 @@ async def main():
 
     # Для тестирования - раскомментируйте нужную строку:
     # await bot.publish_test_post()  # Опубликовать тестовый пост
-    await bot.generate_and_publish_post()  # Сгенерировать и опубликовать пост сейчас
+    # await bot.generate_and_publish_post()  # Сгенерировать и опубликовать пост сейчас
 
     await bot.start()
 
