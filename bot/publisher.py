@@ -1,5 +1,8 @@
+# publisher.py | MIT License | 2025 | author: DimaLab
 import logging
+import aiohttp
 from aiogram import Bot
+from aiogram.types import FSInputFile, URLInputFile
 from aiogram.enums import ParseMode
 from .config import Config
 
@@ -10,25 +13,59 @@ class ChannelPublisher:
     def __init__(self):
         self.bot = Bot(token=Config.BOT_TOKEN)
 
-    async def publish_post(self, content: str, parse_mode: str = None) -> bool:
+    async def publish_post(self, post_data: dict, parse_mode: str = None) -> bool:
+        """Публикует пост с изображением или без"""
         try:
-            logger.info(f"Публикация поста в канал {Config.CHANNEL_ID}")
+            logger.info(f"Публикация поста типа '{post_data['type']}' в канал {Config.CHANNEL_ID}")
 
-            message = await self.bot.send_message(
-                chat_id=Config.CHANNEL_ID,
-                text=content,
-                parse_mode=parse_mode,
-                disable_web_page_preview=True
-            )
+            # Если есть изображение, публикуем с фото
+            if post_data.get('image_url'):
+                try:
+                    # Создаем URLInputFile для отправки изображения по URL
+                    photo = URLInputFile(post_data['image_url'])
 
-            logger.info(f"Пост успешно опубликован. Message ID: {message.message_id}")
-            return True
+                    message = await self.bot.send_photo(
+                        chat_id=Config.CHANNEL_ID,
+                        photo=photo,
+                        caption=post_data['text'],
+                        parse_mode=parse_mode
+                    )
+
+                    logger.info(f"Пост с изображением успешно опубликован. Message ID: {message.message_id}")
+                    return True
+
+                except Exception as img_error:
+                    logger.warning(f"Ошибка при отправке изображения: {img_error}")
+                    # Отправляем только текст, если изображение не удалось
+                    return await self._send_text_only(post_data['text'], parse_mode)
+
+            # Если изображения нет, отправляем только текст
+            else:
+                return await self._send_text_only(post_data['text'], parse_mode)
 
         except Exception as e:
             logger.error(f"Ошибка при публикации поста: {e}")
             return False
 
+    async def _send_text_only(self, text: str, parse_mode: str = None) -> bool:
+        """Отправляет только текстовое сообщение"""
+        try:
+            message = await self.bot.send_message(
+                chat_id=Config.CHANNEL_ID,
+                text=text,
+                parse_mode=parse_mode,
+                disable_web_page_preview=True
+            )
+
+            logger.info(f"Текстовый пост успешно опубликован. Message ID: {message.message_id}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Ошибка при отправке текстового поста: {e}")
+            return False
+
     async def test_connection(self) -> bool:
+        """Тестирует соединение с каналом"""
         try:
             chat = await self.bot.get_chat(Config.CHANNEL_ID)
             logger.info(f"Соединение с каналом '{chat.title}' успешно")
@@ -39,4 +76,5 @@ class ChannelPublisher:
             return False
 
     async def close(self):
+        """Закрывает соединение"""
         await self.bot.session.close()

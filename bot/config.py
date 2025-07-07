@@ -1,3 +1,4 @@
+# config.py
 import os
 from dotenv import load_dotenv
 
@@ -9,6 +10,8 @@ class Config:
     CHANNEL_ID = os.getenv('CHANNEL_ID')
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4.1')
+    IMAGE_MODEL = os.getenv('IMAGE_MODEL', 'gpt-image-1')
+    IMAGE_SIZE = os.getenv('IMAGE_SIZE', '1024x1024')
     TIMEZONE = os.getenv('TIMEZONE', 'Asia/Almaty')
 
     POST_SCHEDULE = [8, 13, 19]
